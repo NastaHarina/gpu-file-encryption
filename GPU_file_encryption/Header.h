@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <vector>
+#include <string>
 
 
 class AEScipher
@@ -11,15 +12,23 @@ public:
 	//std::vector<std::string> file;
 	//std::vector <bool> checksum;
 
-	// for start
-	int key;
-	std::string file;
 
 	// constructor for read data
+	//AEScipher();
 	AEScipher(std::string pathkey, std::string folder);
+
+	std::string ReadFile(std::string path);
+
+	void ToHex(const std::string str, std::string& hexstr, bool capital = false);
+
 
 	//checking the file for checksums
 	//void Checksum();
+
+	// for start
+	std::string key;
+	std::string file;
+
 
 private:
 
