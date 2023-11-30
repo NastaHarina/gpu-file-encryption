@@ -2,7 +2,6 @@
 #include <iostream>
 #include <vector>
 #include <string>
-using namespace std;
 
 
 class AEScipher
@@ -16,17 +15,26 @@ public:
 
 	// constructor for read data
 	//AEScipher();
-	AEScipher(string pathkey, string folder);
+	AEScipher(std::string pathkey, std::string folder);
 
-	string ReadFile(string path);
+	std::string ReadFile(std::string path);
+
+	void ToHex(const std::string str, std::string hexstr[4096]);
+
+	//for check, then delete
+	void ToString(const std::string str[]);
+
+	// for check, then delete
+	void PrintData(std::string fil[]);
 
 
 	//checking the file for checksums
 	//void Checksum();
 
 	// for start
-	string key;
-	string file;
+	// size key?
+	std::string key [4096];
+	std::string file[4096];
 
 
 private:

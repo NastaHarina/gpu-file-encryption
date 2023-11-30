@@ -1,12 +1,27 @@
 #include "Header.h"
-using namespace std;
 
 int main()
 {
-	AEScipher path("C:/Users/Anastasia/Desktop/GPU_file_encryption/GPU_file_encryption/GPU_file_encryption/key.txt", "C:/Users/Anastasia/Desktop/GPU_file_encryption/GPU_file_encryption/GPU_file_encryption/data");
+	AEScipher path("Enter your path for file key", "Enter your path for folder with data file");
 
-	cout <<"key "<< path.key << endl;
-	cout <<"file " << path.file << endl;
+	std::cout << "key: ";
+	path.PrintData(path.key);
+
+	std::cout << std::endl;
+
+
+	std::cout <<"file: ";
+	path.PrintData(path.file);
+
+	std::cout<<std::endl << "check for rigth" << std::endl;
+	std::cout << "key in str: "<<std::endl;
+
+
+	path.ToString(path.key);
+
+	std::cout << "file in str: ";
+
+	path.ToString(path.file);
 
 	return 0;
 }
