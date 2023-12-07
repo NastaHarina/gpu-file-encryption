@@ -12,29 +12,14 @@ public:
 	//std::vector<std::string> file;
 	//std::vector <bool> checksum;
 
-
-	// constructor for read data
-	//AEScipher();
 	AEScipher(std::string pathkey, std::string folder);
 
-	std::string ReadFile(std::string path);
+	void WriteFile(const char writedata[4096], const std::string path);
 
-	void ToHex(const std::string str, std::string hexstr[4096]);
+	std::vector<char> ReadFile(std::string path);
 
-	//for check, then delete
-	void ToString(const std::string str[]);
-
-	// for check, then delete
-	void PrintData(std::string fil[]);
-
-
-	//checking the file for checksums
-	//void Checksum();
-
-	// for start
-	// size key?
-	std::string key [4096];
-	std::string file[4096];
+	char key [4096];
+	char file[4096];
 
 
 private:

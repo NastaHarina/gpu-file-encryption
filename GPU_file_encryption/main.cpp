@@ -2,26 +2,32 @@
 
 int main()
 {
-	AEScipher path("Enter your path for file key", "Enter your path for folder with data file");
+	AEScipher path("C:/Users/Anastasia/Desktop/GPU_file_encryption/GPU_file_encryption/GPU_file_encryption/key.txt", "C:/Users/Anastasia/Desktop/GPU_file_encryption/GPU_file_encryption/GPU_file_encryption/data");
 
 	std::cout << "key: ";
-	path.PrintData(path.key);
 
-	std::cout << std::endl;
-
-
-	std::cout <<"file: ";
-	path.PrintData(path.file);
-
-	std::cout<<std::endl << "check for rigth" << std::endl;
-	std::cout << "key in str: "<<std::endl;
+	for (int i = 0; path.key[i] != '\0'; ++i) {
+		std::cout << "Character at index " << i << ": " << path.key[i] << std::endl;
+	}
 
 
-	path.ToString(path.key);
+	std::cout <<"file: "<<std::endl;
 
-	std::cout << "file in str: ";
+	for (int i = 0; path.file[i] != '\0'; ++i) {
+		std::cout << "Character at index " << i << ": " << path.file[i] << std::endl;
+	}
 
-	path.ToString(path.file);
+	path.WriteFile(path.key, "C:/Users/Anastasia/Desktop/GPU_file_encryption/GPU_file_encryption/GPU_file_encryption/keyforcheck.bin");
+
+	// read file
+	std::vector<char> filestr = path.ReadFile("C:/Users/Anastasia/Desktop/GPU_file_encryption/GPU_file_encryption/GPU_file_encryption/keyforcheck.bin");
+
+
+	for (char c : filestr) {
+		std::cout << c;
+	}
+
 
 	return 0;
 }
+
