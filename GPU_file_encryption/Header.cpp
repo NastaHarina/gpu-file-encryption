@@ -270,13 +270,13 @@ unsigned char * AEScipher::EncryptionAES()
 
     unsigned char * output;
     unsigned char iSBox[256];
+
     invertSBox(sBox, iSBox);
     keyExpansion(key, w);
 
     for (size_t i = 0; i < 4; ++i) {
         unsigned char* block = file + i * 16;
-        InvCipher(block, w, sBox);
-        printArray(block, 16);
+        cipher(block, w, sBox);
     }
 
     return file;
@@ -287,12 +287,10 @@ unsigned char* AEScipher::DecryptionAES()
 {
     unsigned char iSBox[256];
     invertSBox(sBox, iSBox);
-    keyExpansion(key, w);
 
     for (size_t i = 0; i < 4; ++i) {
         unsigned char* block = file + i * 16;
-        InvCipher(block, w, sBox);
-        printArray(block, 16);
+        InvCipher(block, w, iSBox);
     }
 
     return file;
