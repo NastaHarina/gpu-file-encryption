@@ -10,7 +10,8 @@ public:
 	// for task
 	//std::vector<int> key;
 	//std::vector<std::string> file;
-	//std::vector <bool> checksum;
+	//std::vector <bool> checks
+  
 
 	AEScipher(std::string pathkey, std::string folder);
 
@@ -20,6 +21,11 @@ public:
 
 	char key [4096];
 	char file[4096];
+
+
+	// for start
+	std::string key;
+	std::string file;
 
 
 private:
