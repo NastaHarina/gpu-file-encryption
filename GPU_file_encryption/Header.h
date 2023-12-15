@@ -10,20 +10,18 @@ public:
 	// for task
 	//std::vector<int> key;
 	//std::vector<std::string> file;
-	//std::vector <bool> checksum;
+	//std::vector <bool> checks
+  
 
-
-	// constructor for read data
-	//AEScipher();
 	AEScipher(std::string pathkey, std::string folder);
 
-	std::string ReadFile(std::string path);
+	void WriteFile(const char writedata[4096], const std::string path);
 
-	void ToHex(const std::string str, std::string& hexstr, bool capital = false);
+	std::vector<char> ReadFile(std::string path);
 
+	char key [4096];
+	char file[4096];
 
-	//checking the file for checksums
-	//void Checksum();
 
 	// for start
 	std::string key;
