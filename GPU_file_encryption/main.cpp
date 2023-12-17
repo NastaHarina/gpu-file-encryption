@@ -1,5 +1,4 @@
 #include "Header.h"
-#include <iomanip>
 
 int main()
 {
@@ -8,24 +7,24 @@ int main()
 	
 	std::cout << "Writing kes to a file" << std::endl;
 	//Delete empty string
-	// Удаление символов '\0' внутри строк
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ '\0' пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
 	for (auto& vec : path.keyss) {
 		vec.erase(std::remove(vec.begin(), vec.end(), '\0'), vec.end());
 
 	}
 
-	// Удаление пустых строк (пустых векторов)
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ (пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ)
 	path.keyss.erase(std::remove_if(path.keyss.begin(), path.keyss.end(), [](const auto& vec) {
 		return vec.empty();
 		}), path.keyss.end());
 
 
-	// Удаление символов '\0' внутри строк
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ '\0' пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
 	for (auto& vec : path.files) {
 		vec.erase(std::remove(vec.begin(), vec.end(), '\0'), vec.end());
 	}
 
-	// Удаление пустых строк (пустых векторов)
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ (пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ)
 	path.files.erase(std::remove_if(path.files.begin(), path.files.end(), [](const auto& vec) {
 		return vec.empty();
 	}), path.files.end());
@@ -35,7 +34,7 @@ int main()
 		combinedData.insert(combinedData.end(), key.begin(), key.end());
 	}
 	
-	// Записать объединенные данные в файл
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ
 	path.WriteFile(combinedData, "keysEncript.bin");
 
 	std::cout << "Combined data written to output_combined.bin" << std::endl;
@@ -56,87 +55,30 @@ int main()
 	
 	std::cout <<std::endl<< "data file: " << std::endl;
 
+	std::cout << "key: ";
 
-	std::cout << "Input: " << std::endl;
-
-
-	int j = 1;
-	for (const auto& line : path.files) {
-		std::cout << "initial data file " << j << std::endl;
-		for (unsigned char ch : line) {
-
-			std::cout << std::hex << (int)ch << " ";
-
-		}
-		j++;
-		std::cout << std::endl;
-	}
-	
-	
-	std::cout << "Encrypted: " << std::endl;
-
-	for (std::size_t i = 0; i < path.files.size(); ++i) {
-		unsigned char* fileData = path.files[i].data();
-		unsigned char* keyData = path.keyss[i].data();
-
-		unsigned char* encryptedData = path.EncryptionAES(fileData, keyData);
-		path.filesEncript.push_back({ encryptedData, encryptedData + path.files[i].size() });
-
-	}
-	
-	int i = 1;
-	for (const auto& line : path.filesEncript) {
-		std::cout << "Encode file " << i << std::endl;
-		for (unsigned char ch : line) {
-			
-			std::cout << std::hex << (int)ch << " ";
-			
-		}
-		i++;
-		std::cout << std::endl;
+	for (int i = 0; path.key[i] != '\0'; ++i) {
+		std::cout << "Character at index " << i << ": " << path.key[i] << std::endl;
 	}
 
-	std::cout << std::endl << "Decrypted: " << std::endl;
 
+	std::cout <<"file: "<<std::endl;
 
-	for (std::size_t i = 0; i < path.files.size(); ++i) {
-		unsigned char* fileData = path.files[i].data();
-
-
-		unsigned char* encryptedData1 = path.DecryptionAES(fileData);
-		path.filesDescript.push_back({ encryptedData1, encryptedData1 + path.files[i].size() });
-
+	for (int i = 0; path.file[i] != '\0'; ++i) {
+		std::cout << "Character at index " << i << ": " << path.file[i] << std::endl;
 	}
 
-	int k = 1;
-	for (const auto& line : path.filesDescript) {
-		std::cout << "Encode file " << k << std::endl;
-		for (unsigned char ch : line) {
+	path.WriteFile(path.key, "C:/Users/Anastasia/Desktop/GPU_file_encryption/GPU_file_encryption/GPU_file_encryption/keyforcheck.bin");
 
-			std::cout << std::hex << (int)ch << " ";
+	// read file
+	std::vector<char> filestr = path.ReadFile("C:/Users/Anastasia/Desktop/GPU_file_encryption/GPU_file_encryption/GPU_file_encryption/keyforcheck.bin");
 
-		}
-		k++;
-		std::cout << std::endl;
+
+	for (char c : filestr) {
+		std::cout << c;
 	}
 
-	/*
-	encfile = path.DecryptionAES();
-	path.printArray(encfile, 64);*/
-
-	//// write to file
-	//path.WriteFile(path.keyss, "C:/Users/Anastasia/Desktop/GPU_file_encryption/GPU_file_encryption/GPU_file_encryption/keyforcheck.bin");
-
-	//// read file
-	//std::vector<char> filestr = path.ReadFile("C:/Users/Anastasia/Desktop/GPU_file_encryption/GPU_file_encryption/GPU_file_encryption/keyforcheck.bin");
-
-	//for (char c : filestr) {
-	//	std::cout << c;
-	//}
-	// 
-	
 
 	return 0;
 }
-
 
