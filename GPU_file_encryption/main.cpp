@@ -11,6 +11,7 @@ int main()
 	// Удаление символов '\0' внутри строк
 	for (auto& vec : path.keyss) {
 		vec.erase(std::remove(vec.begin(), vec.end(), '\0'), vec.end());
+
 	}
 
 	// Удаление пустых строк (пустых векторов)
