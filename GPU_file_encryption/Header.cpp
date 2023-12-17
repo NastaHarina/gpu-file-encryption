@@ -4,9 +4,42 @@
 #include <string>
 #include <iostream>
 #include <sstream>
+	// read folder
+	for (const auto& entry : fs::directory_iterator(folder)) {
+		//std::cout << entry.path() << std::endl;
+		std::string en = entry.path().generic_string();
+		file += ReadFile(en);
 
-namespace fs = std::filesystem;
+	}
 
+	ToHex(file, file);
+}
+
+
+std::string AEScipher::ReadFile(std::string path) 
+{
+	std::ifstream fin;
+	fin.open(path);
+
+	std::string str, str1 = "";
+
+	if (!fin.is_open()) {
+		std::cout << "Error" << std::endl;
+	}
+	else {
+    
+		while (!fin.eof()) {
+			str = "";
+			std::getline(fin, str);
+			str1 +=str +"\n";
+			//cout << str << endl;
+			//key = str;
+		}
+	}
+  
+	fin.close();
+	return str1;
+}
 AEScipher::AEScipher(std::string pathkey, std::string folder)
 {
     std::vector<char> keyforcopy;
@@ -300,9 +333,9 @@ void AEScipher::InvCipher(unsigned char* input, unsigned char w[][4][4], const u
 //        return nullptr;
 //    }
 //
-//    // Итерация по всем элементам files
+//    // �������� �� ���� ��������� files
 //    for (size_t i = 0; i < files.size(); ++i) {
-//        // Замена file на files[i].data()
+//        // ������ file �� files[i].data()
 //        unsigned char* file = files[i].data();
 //
 //        unsigned char iSBox[256];
