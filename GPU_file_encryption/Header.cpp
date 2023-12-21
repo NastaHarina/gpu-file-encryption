@@ -16,30 +16,23 @@ AEScipher::AEScipher(std::string pathkey, std::string folder)
 
     for (char ch : keyforcopy) {
         if (ch == '\n') {
-            // Если встречен символ новой строки, добавляем текущую строку в data
             keyss.push_back(currentLine);
             currentLine.clear();
         }
         else {
-            // Добавляем символ в текущую строку
             currentLine.push_back(static_cast<unsigned char>(ch));
         }
     }
 
-    // Добавляем последнюю строку, если она не заканчивается символом новой строки
     if (!currentLine.empty()) {
         keyss.push_back(currentLine);
     }
 
-
     std::vector<char> filestr;
-
 
     std::vector<unsigned char> currentLineFile;
 
-
     for (const auto& entry : fs::directory_iterator(folder)) {
-
 
         std::string filename = entry.path().generic_string();
         std::vector<char> fileContent = ReadFile(filename);
@@ -82,15 +75,16 @@ std::vector<char> AEScipher::ReadFile(std::string path) {
     return buffer;
 }
 
-// Ôóíêöèÿ äëÿ âûâîäà ìàññèâà
+// Function to print array
 void AEScipher::printArray(unsigned char* arr, int length) {
     for (int i = 0; i < length; ++i) {
         std::cout << std::hex << (int)arr[i] << " ";
     }
+
     std::cout << std::dec << std::endl;
 }
 
-// Ôóíêöèÿ äëÿ ðàñøèðåíèÿ êëþ÷à
+// Function for key expansion
 void AEScipher::keyExpansion(unsigned char* key, unsigned char w[][4][4]) {
     int i, j, r, c;
     unsigned char rc[] = { 0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80, 0x1b, 0x36 };
@@ -100,7 +94,6 @@ void AEScipher::keyExpansion(unsigned char* key, unsigned char w[][4][4]) {
             w[0][r][c] = key[r + c * 4];
         }
     }
-
 
     for (i = 1; i <= 10; ++i) {
         for (j = 0; j < 4; ++j) {
@@ -125,7 +118,7 @@ void AEScipher::keyExpansion(unsigned char* key, unsigned char w[][4][4]) {
     }
 }
 
-// Ôóíêöèÿ äëÿ âûïîëíåíèÿ îïåðàöèè FFmul
+// Function for FFmul operation
 unsigned char AEScipher::ffMultiply(unsigned char a, unsigned char b) {
     unsigned char bw[4];
     unsigned char res = 0;
@@ -148,7 +141,7 @@ unsigned char AEScipher::ffMultiply(unsigned char a, unsigned char b) {
     return res;
 }
 
-// Ôóíêöèÿ äëÿ çàìåíû áàéòîâ â ìàòðèöå ñîñòîÿíèÿ
+// Function for byte substitution in state matrix
 void AEScipher::subBytes(unsigned char state[][4], const unsigned char* sBox) {
     int r, c;
     for (r = 0; r < 4; ++r) {
@@ -158,7 +151,7 @@ void AEScipher::subBytes(unsigned char state[][4], const unsigned char* sBox) {
     }
 }
 
-// Ôóíêöèÿ äëÿ öèêëè÷åñêîãî ñäâèãà ñòðîê â ìàòðèöå ñîñòîÿíèÿ
+// Function for cyclic shift of rows in state matrix
 void AEScipher::shiftRows(unsigned char state[][4]) {
     unsigned char t[4];
     int r, c;
@@ -172,7 +165,7 @@ void AEScipher::shiftRows(unsigned char state[][4]) {
     }
 }
 
-// Ôóíêöèÿ äëÿ ÎÁÐÀÒÍÎÃÎ öèêëè÷åñêîãî ñäâèãà ñòðîê â ìàòðèöå ñîñòîÿíèÿ
+// Function for INVERSE cyclic shift of rows in state matrix
 void AEScipher::InvShiftRows(unsigned char state[][4]) {
     unsigned char t[4];
     int r, c;
@@ -186,7 +179,7 @@ void AEScipher::InvShiftRows(unsigned char state[][4]) {
     }
 }
 
-// Ôóíêöèÿ äëÿ ïåðåìåøèâàíèÿ ñòîëáöîâ â ìàòðèöå ñîñòîÿíèÿ
+// Function for column mixing in state matrix
 void AEScipher::mixColumns(unsigned char state[][4]) {
     unsigned char t[4];
     int r, c;
@@ -203,7 +196,7 @@ void AEScipher::mixColumns(unsigned char state[][4]) {
     }
 }
 
-// Ôóíêöèÿ äëÿ ÎÁÐÀÒÍÎÃÎ ïåðåìåøèâàíèÿ ñòîëáöîâ â ìàòðèöå ñîñòîÿíèÿ
+// Function for INVERSE column mixing in state matrix
 void AEScipher::InvMixColumns(unsigned char state[][4]) {
     unsigned char t[4];
     int r, c;
@@ -220,7 +213,7 @@ void AEScipher::InvMixColumns(unsigned char state[][4]) {
     }
 }
 
-// Ôóíêöèÿ äëÿ âûïîëíåíèÿ îïåðàöèè XOR íàä ìàòðèöàìè ñîñòîÿíèÿ è êëþ÷à ðàóíäà
+// Function for XOR operation over state matrix and round key
 void AEScipher::addRoundKey(unsigned char state[][4], unsigned char k[][4]) {
     int r, c;
     for (c = 0; c < 4; ++c) {
@@ -230,7 +223,7 @@ void AEScipher::addRoundKey(unsigned char state[][4], unsigned char k[][4]) {
     }
 }
 
-// Ôóíêöèÿ äëÿ øèôðîâàíèÿ áëîêà äàííûõ
+// Function for encrypting a block of data
 void AEScipher::cipher(unsigned char* input, unsigned char w[][4][4], const unsigned char* sBox) {
     unsigned char state[4][4];
     int i, r, c;
@@ -257,7 +250,7 @@ void AEScipher::cipher(unsigned char* input, unsigned char w[][4][4], const unsi
     }
 }
 
-// Ôóíêöèÿ äëÿ èíâåðòèðîâàíèÿ SBox
+// Function to invert SBox
 void invertSBox(const unsigned char* sBox, unsigned char* invSBox) {
     for (int i = 0; i < 16; ++i) {
         for (int j = 0; j < 16; ++j) {
@@ -266,7 +259,7 @@ void invertSBox(const unsigned char* sBox, unsigned char* invSBox) {
     }
 }
 
-// Ôóíêöèÿ äëÿ äåøèôðîâàíèÿ áëîêà äàííûõ
+// Function for decrypting a block of data
 void AEScipher::InvCipher(unsigned char* input, unsigned char w[][4][4], const unsigned char* invSBox) {
     unsigned char state[4][4];
     int i, r, c;
@@ -293,39 +286,9 @@ void AEScipher::InvCipher(unsigned char* input, unsigned char w[][4][4], const u
     }
 }
 
-//unsigned char* AEScipher::EncryptionAES()
-//{
-//    if (keyss.empty() || files.empty()) {
-//        std::cerr << "Key or file data is missing." << std::endl;
-//        return nullptr;
-//    }
-//
-//    // Итерация по всем элементам files
-//    for (size_t i = 0; i < files.size(); ++i) {
-//        // Замена file на files[i].data()
-//        unsigned char* file = files[i].data();
-//
-//        unsigned char iSBox[256];
-//        invertSBox(sBox, iSBox);
-//
-//        for (size_t j = 0; j < keyss.size(); ++j) {
-//            unsigned char* key = keyss[j].data();
-//            keyExpansion(key, w);
-//            for (size_t j = 0; j < 4; ++j) {
-//                unsigned char* block = file + j * 16;
-//                cipher(block, w, sBox);
-//            }
-//        }
-//
-//
-//    }
-//
-//    return files[0].data();
-//}
-
+// Function for AES encryption
 unsigned char* AEScipher::EncryptionAES(unsigned char* fileEn, unsigned char* keyEn)
 {
-
     unsigned char* output;
     unsigned char iSBox[256];
 
@@ -338,11 +301,10 @@ unsigned char* AEScipher::EncryptionAES(unsigned char* fileEn, unsigned char* ke
     }
 
     return fileEn;
-
 }
 
 
-
+// Function for AES decryption
 unsigned char* AEScipher::DecryptionAES(unsigned char* fileEn)
 {
     if (keyss.empty() || files.empty()) {

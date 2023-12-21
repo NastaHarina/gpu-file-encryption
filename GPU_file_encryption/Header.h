@@ -29,8 +29,6 @@ public:
 	//std::vector<std::array<unsigned char, 1024>> keys; // size key max?
 	std::vector<std::vector<unsigned char >> keyss;
 
-
-
 	std::vector<std::vector<unsigned char >> files;
 
 	std::vector<std::vector<unsigned char >> filesEncript;
@@ -42,9 +40,6 @@ public:
 
 	//unsigned char key [4096];
 	//unsigned char file[4096];
-
-
-
 
 private:
 
