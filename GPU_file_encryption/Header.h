@@ -16,20 +16,22 @@ public:
 
 	AEScipher(std::string pathkey, std::string folder);
 
-	void printArray(unsigned char* arr, int length);
+	// print
+	void PrintDataFiles(const std::vector<std::vector<unsigned char>>& files);
+	void PrintKey(const std::vector<unsigned char>& vec);
 
 	unsigned char* EncryptionAES(unsigned char* fileEn, unsigned char* keyEn);
 	unsigned char* DecryptionAES(unsigned char* fileEn);
 
 	void WriteFile(std::vector<unsigned char > writedata, const std::string path);
 
-	std::vector<char> ReadFile(std::string path);
+	std::vector<unsigned char> ReadFile(std::string path);
 
 	//std::array<unsigned char, 128> key = {};
 	//std::vector<std::array<unsigned char, 1024>> keys; // size key max?
-	std::vector<std::vector<unsigned char >> keyss;
-
-
+	
+	//a variable for storing all keys
+	std::vector<std::vector< unsigned char >> keyss;
 
 	std::vector<std::vector<unsigned char >> files;
 

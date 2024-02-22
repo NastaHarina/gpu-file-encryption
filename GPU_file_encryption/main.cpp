@@ -2,40 +2,27 @@
 
 int main()
 {
-	AEScipher path("key.txt", "folder");
-	//unsigned char* encfile;
+	AEScipher path("key.txt", "data");
 	
-	std::cout << "Writing kes to a file" << std::endl;
+
 	//Delete empty string
-	// �������� �������� '\0' ������ �����
-	for (auto& vec : path.keyss) {
-		vec.erase(std::remove(vec.begin(), vec.end(), '\0'), vec.end());
+	//path.keyss.erase(std::remove_if(path.keyss.begin(), path.keyss.end(), [](unsigned char c) { return c == '\0'; }), path.keyss.end());
 
-	}
-
-	// �������� ������ ����� (������ ��������)
-	path.keyss.erase(std::remove_if(path.keyss.begin(), path.keyss.end(), [](const auto& vec) {
-		return vec.empty();
-		}), path.keyss.end());
+	std::cout << "key: ";
+	path.PrintDataFiles(path.keyss);
 
 
-	// �������� �������� '\0' ������ �����
-	for (auto& vec : path.files) {
-		vec.erase(std::remove(vec.begin(), vec.end(), '\0'), vec.end());
-	}
-
-	// �������� ������ ����� (������ ��������)
-	path.files.erase(std::remove_if(path.files.begin(), path.files.end(), [](const auto& vec) {
-		return vec.empty();
-	}), path.files.end());
-
-	std::vector<unsigned char> combinedData;
-	for (const auto& key : path.keyss) {
-		combinedData.insert(combinedData.end(), key.begin(), key.end());
-	}
+	// Delete empty string in files
+	//for (auto& vec : path.files) {
+	//	vec.erase(std::remove(vec.begin(), vec.end(), '\0'), vec.end());
+	//}
 	
-	// �������� ������������ ������ � ����
-	path.WriteFile(combinedData, "keysEncript.bin");
+	path.PrintDataFiles(path.files);
+
+	//path.files.erase(std::remove_if(path.files.begin(), path.files.end(), [](const auto& vec) {
+	//	return vec.empty();
+	//}), path.files.end());
+
 
 	std::cout << "Combined data written to output_combined.bin" << std::endl;
 
@@ -52,32 +39,49 @@ int main()
 		std::cout << "Data written to " << filename << std::endl;
 	}
 
+	//let the keys and files have the same data size
+	//for (size_t i = 0; i < path.files.size(); ++i) {
+
+		//std::cout << "len path.keyss " << path.keyss.size() << std::endl;
+
+		unsigned char* EncrytData = path.EncryptionAES(path.files[3].data(), path.keyss[3].data());
+		size_t length = sizeof(EncrytData) / sizeof(EncrytData[0]);
+
+		size_t length1 = sizeof(path.files[0]);
+		std::cout << length << std::endl << length1 << std::endl;
+
+
+
+		std::cout << "EncryptionAES: " << std::endl;
+		for (size_t i = 0; i < length; ++i) {
+			std::cout << static_cast<int>(EncrytData[i]) << " ";
+		}
+		std::cout << std::endl;
+
+		std::cout << "DecryptionAES: " << std::endl;
+
+		unsigned char* DecryptionData = path.DecryptionAES(EncrytData);
+
+		for (size_t i = 0; i < length; ++i) {
+			std::cout << static_cast<int>(EncrytData[i]) << " ";
+		}
+		std::cout << std::endl;
+
+
+		//std::cout << std::endl;
+	//}
+	//std::cout<<EncrytData<<std::endl;
 	
-	std::cout <<std::endl<< "data file: " << std::endl;
 
-	std::cout << "key: ";
+	//}
 
-	for (int i = 0; path.key[i] != '\0'; ++i) {
-		std::cout << "Character at index " << i << ": " << path.key[i] << std::endl;
-	}
+	//path.WriteFile(path.keyss, "C:/Users/Anastasia/Desktop/GPU_file_encryption/GPU_file_encryption/GPU_file_encryption/keyforcheck.bin");
 
-
-	std::cout <<"file: "<<std::endl;
-
-	for (int i = 0; path.file[i] != '\0'; ++i) {
-		std::cout << "Character at index " << i << ": " << path.file[i] << std::endl;
-	}
-
-	path.WriteFile(path.key, "C:/Users/Anastasia/Desktop/GPU_file_encryption/GPU_file_encryption/GPU_file_encryption/keyforcheck.bin");
-
-	// read file
-	std::vector<char> filestr = path.ReadFile("C:/Users/Anastasia/Desktop/GPU_file_encryption/GPU_file_encryption/GPU_file_encryption/keyforcheck.bin");
-
-
-	for (char c : filestr) {
-		std::cout << c;
-	}
-
+	// read file 
+	//std::vector<unsigned char> filestr = path.ReadFile("C:/Users/Anastasia/Desktop/GPU_file_encryption/GPU_file_encryption/GPU_file_encryption/keyforcheck.bin");
+	//std::vector<unsigned char> filestr1 = path.ReadFile("C:/Users/Anastasia/Desktop/GPU_file_encryption/GPU_file_encryption/GPU_file_encryption/dataEncode/fileEncript0.bin");
+	//std::cout << " filestr1: " << std::endl;
+	//path.PrintKey(filestr1);
 
 	return 0;
 }
