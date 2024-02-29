@@ -25,6 +25,8 @@ public:
 
 	void WriteFile(std::vector<unsigned char > writedata, const std::string path);
 
+	int CheckSums( unsigned char* data, size_t size);
+
 	std::vector<unsigned char> ReadFile(std::string path);
 
 	//std::array<unsigned char, 128> key = {};

@@ -54,7 +54,7 @@ void AEScipher::PrintDataFiles(const std::vector<std::vector<unsigned char>>& fi
         for (const auto& element : row) {
             std::cout << static_cast<int>(element) << " ";
         }
-        std::cout << std::endl;
+        std::cout << "check1" << std::endl;
         number_file_to_read++;
     }
 }
@@ -80,6 +80,23 @@ void AEScipher::WriteFile(std::vector<unsigned char > writedata, const std::stri
 
     outFile.close();
 }
+
+int AEScipher::CheckSums(unsigned char* data, size_t size)
+{
+    int sum = 0;
+    for (int i = 0; i < size; i+=2) {
+        int mult = data[i] * data[i+1] ;
+        int div = 0;
+        if (data[i + 1] != 0) {
+            div = data[i] / data[i + 1];
+        }
+        sum += mult;
+        sum += div;
+    }
+    return sum;
+}
+
+
 
 // read one file
 std::vector<unsigned char> AEScipher::ReadFile(std::string path) {

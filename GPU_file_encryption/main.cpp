@@ -44,16 +44,28 @@ int main()
 
 		//std::cout << "len path.keyss " << path.keyss.size() << std::endl;
 
-		unsigned char* EncrytData = path.EncryptionAES(path.files[3].data(), path.keyss[3].data());
-		size_t length = sizeof(EncrytData) / sizeof(EncrytData[0]);
+	// then must be function
+	for (int i = 0; i < path.keyss.size(); i++) {
 
-		size_t length1 = sizeof(path.files[0]);
-		std::cout << length << std::endl << length1 << std::endl;
+		unsigned char* Encrytkeyss = new unsigned char[path.keyss[i].size()];//path.EncryptionAES(path.files[3].data(), path.keyss[3].data());
+		unsigned char* EncrytFiles = new unsigned char[path.files[i].size()];
+
+		std::copy(path.keyss[i].begin(), path.keyss[i].end(), Encrytkeyss);
+		std::copy(path.files[i].begin(), path.files[i].end(), EncrytFiles);
 
 
+		//size_t length = sizeof(EncrytData) / sizeof(EncrytData[0]);
+
+		size_t length1 = path.files[i].size();
+		std::cout << std::endl << length1 << std::endl;
+
+		int sum1 = path.CheckSums(EncrytFiles, length1);
+		std::cout << "Sum " << sum1 << std::endl;
+
+		unsigned char* EncrytData = path.EncryptionAES(EncrytFiles, Encrytkeyss);
 
 		std::cout << "EncryptionAES: " << std::endl;
-		for (size_t i = 0; i < length; ++i) {
+		for (size_t i = 0; i < length1; ++i) {
 			std::cout << static_cast<int>(EncrytData[i]) << " ";
 		}
 		std::cout << std::endl;
@@ -62,26 +74,16 @@ int main()
 
 		unsigned char* DecryptionData = path.DecryptionAES(EncrytData);
 
-		for (size_t i = 0; i < length; ++i) {
-			std::cout << static_cast<int>(EncrytData[i]) << " ";
+		int sum2 = path.CheckSums(DecryptionData, length1);
+		std::cout << "Sum " << sum2 << std::endl;
+
+		for (size_t i = 0; i < length1; ++i) {
+			std::cout << static_cast<int>(DecryptionData[i]) << " ";
 		}
 		std::cout << std::endl;
+	}
 
 
-		//std::cout << std::endl;
-	//}
-	//std::cout<<EncrytData<<std::endl;
-	
-
-	//}
-
-	//path.WriteFile(path.keyss, "C:/Users/Anastasia/Desktop/GPU_file_encryption/GPU_file_encryption/GPU_file_encryption/keyforcheck.bin");
-
-	// read file 
-	//std::vector<unsigned char> filestr = path.ReadFile("C:/Users/Anastasia/Desktop/GPU_file_encryption/GPU_file_encryption/GPU_file_encryption/keyforcheck.bin");
-	//std::vector<unsigned char> filestr1 = path.ReadFile("C:/Users/Anastasia/Desktop/GPU_file_encryption/GPU_file_encryption/GPU_file_encryption/dataEncode/fileEncript0.bin");
-	//std::cout << " filestr1: " << std::endl;
-	//path.PrintKey(filestr1);
 
 	return 0;
 }
